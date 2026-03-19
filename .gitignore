@@ -1,0 +1,43 @@
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build output
+dist/
+build/
+out-tsc/
+bazel-out/
+/.angular/cache
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# IDEs and editors
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/mcp.json
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.history/*
+
+# OS and system files
+.DS_Store
+Thumbs.db
+
+# Miscellaneous
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+__screenshots__/
