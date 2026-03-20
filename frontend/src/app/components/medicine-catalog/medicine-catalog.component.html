@@ -1,0 +1,80 @@
+<div class="p-6">
+  <div class="flex items-center justify-between mb-6">
+    <h2 class="text-2xl font-bold text-gray-800">Medicine Catalog</h2>
+    <button
+      (click)="seedData()"
+      class="px-4 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+      Seed Sample Data
+    </button>
+  </div>
+
+  <!-- Search Bar -->
+  <div class="mb-6">
+    <div class="relative">
+      <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+      </svg>
+      <input
+        type="text"
+        [ngModel]="searchQuery()"
+        (ngModelChange)="updateSearch($event)"
+        placeholder="Search by name, generic name, or barcode..."
+        class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" />
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (loading()) {
+    <div class="flex justify-center py-12">
+      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
+    </div>
+  }
+
+  <!-- Medicine Grid -->
+  @if (!loading()) {
+    @if (medicines().length === 0) {
+      <div class="text-center py-12 text-gray-500">
+        <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M12 2a10 10 0 100 20 10 10 0 000-20z"/>
+        </svg>
+        <p class="text-lg">No medicines found</p>
+        <p class="text-sm mt-1">Try a different search or seed sample data</p>
+      </div>
+    } @else {
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        @for (med of medicines(); track med.id) {
+          <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition p-5">
+            <div class="flex justify-between items-start mb-3">
+              <div>
+                <h3 class="font-semibold text-gray-900 text-lg">{{ med.name }}</h3>
+                <p class="text-sm text-gray-500">{{ med.genericName }}</p>
+              </div>
+              <span class="px-2.5 py-1 text-xs font-medium rounded-full"
+                [class]="med.stock > 50 ? 'bg-green-100 text-green-700' : med.stock > 0 ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'">
+                {{ med.stock > 0 ? 'In Stock: ' + med.stock : 'Out of Stock' }}
+              </span>
+            </div>
+            <div class="space-y-1 text-sm text-gray-600 mb-4">
+              <p><span class="font-medium">Barcode:</span> {{ med.barcode }}</p>
+              @if (med.dosageForm) {
+                <p><span class="font-medium">Form:</span> {{ med.dosageForm }} {{ med.strength || '' }}</p>
+              }
+              @if (med.manufacturer) {
+                <p><span class="font-medium">Manufacturer:</span> {{ med.manufacturer }}</p>
+              }
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-xl font-bold text-blue-600">৳{{ med.price }}</span>
+              <button
+                (click)="addToCart(med)"
+                [disabled]="med.stock === 0"
+                class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition">
+                Add to Cart
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

@@ -51,14 +51,14 @@ export class OrderService {
     const total = subtotal - discount;
 
     const order = this.orderRepo.create({
-      customerId: dto.customerId || null,
+      customerId: dto.customerId ?? undefined,
       subtotal,
       discount,
       total,
       status: OrderStatus.PENDING,
     });
 
-    const savedOrder = await this.orderRepo.save(order);
+    const savedOrder = await this.orderRepo.save(order) as Order;
 
     for (const item of orderItems) {
       const orderItem = this.itemRepo.create({
