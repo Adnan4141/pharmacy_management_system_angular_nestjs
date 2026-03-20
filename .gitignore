@@ -41,3 +41,16 @@ Thumbs.db
 testem.log
 /typings
 __screenshots__/
+
+# AI / Editor tool configs
+.cursor/
+.claude/
+.gemini/
+.junie/
+.windsurf/
+AGENTS.md
+.angular/
+
+# Exclude sub-project READMEs (keep only root README.md)
+frontend/README.md
+backend/README.md
